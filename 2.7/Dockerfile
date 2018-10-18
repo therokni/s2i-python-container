@@ -35,13 +35,12 @@ LABEL summary="$SUMMARY" \
 
 # Install sasl
 RUN INSTALL_PKGS="cyrus-sasl-plain cyrus-sasl-gssapi" && \
-    yum install -y yum-utils && \
-    prepare-yum-repositories rhel-server-rhscl-7-rpms && \
-    yum -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
+   yum install -y centos-release-scl && \
+    yum -y --setopt=tsflags=nodocs install --enablerepo=centosplus $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
-    # Remove redhat-logos (httpd dependency) to keep image size smaller.
-    rpm -e --nodeps redhat-logos && \
-    yum -y clean all --enablerepo='*' 
+    # Remove centos-logos (httpd dependency) to keep image size smaller.
+    rpm -e --nodeps centos-logos && \
+    yum -y clean all --enablerepo='*'
 
 RUN INSTALL_PKGS="libjpeg-turbo libjpeg-turbo-devel python27 python27-python-devel python27-python-setuptools \
         python27-python-pip nss_wrapper httpd24 httpd24-httpd-devel httpd24-mod_ssl \
